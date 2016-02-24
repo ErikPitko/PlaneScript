@@ -55,13 +55,6 @@ public class GpgCalc implements Runnable {
 						plans.next();
 						String datetime = plans.getString("Date/Time");
 
-						// airport = sql.select("SELECT * FROM 'Airports' WHERE
-						// Airport = '" + leave + "';");
-						// airport.next();
-						// Point2d gpsPlaneStartPoint = new
-						// Point2d(airport.getDouble("gpsX"),
-						// airport.getDouble("gpsY"));
-
 						airport = sql.select("SELECT * FROM 'Airports' WHERE Airport = '" + arrive + "';");
 						airport.next();
 						Point2d gpsPlaneEndPoint = new Point2d(airport.getDouble("gpsX"), airport.getDouble("gpsY"));
@@ -93,7 +86,6 @@ public class GpgCalc implements Runnable {
 						buff.append("')");
 						sql.insert("INSERT INTO 'Flight History' (PlaneID, Leave, Arrival, 'Date/Time') VALUES "
 								+ buff.toString() + ";");
-						System.out.println("Plane landing: " + gpsPlaneEndPoint.toString());
 						sql.update("UPDATE 'Planes' set 'GpsX' = '" + gpsPlaneEndPoint.x + "', 'GpsY' = '"+ gpsPlaneEndPoint.y + "' WHERE ID = " + planeID + ";");
 						
 						
@@ -104,7 +96,6 @@ public class GpgCalc implements Runnable {
 
 					} else {
 						gpsRelative = GPS.calcRelativeGPS(gpsPlane, gpsEndPoint, speed, timeSet);
-//						System.out.println("Plane update: " + gpsRelative.toString());
 						sql.update("UPDATE 'Planes' set 'GpsX' = '" + gpsRelative.x + "', 'GpsY' = '" + gpsRelative.y
 								+ "' WHERE ID = " + planeID + ";");
 						

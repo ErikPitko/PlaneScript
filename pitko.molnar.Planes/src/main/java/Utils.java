@@ -72,8 +72,6 @@ public class Utils {
 		ResultSet planes = sql.select("SELECT * FROM Planes;");
 		while (planes.next()) {
 			Point2d gpsPlane = new Point2d(planes.getDouble("GpsX"), planes.getDouble("GpsY"));
-			// pošle x,y do metódy ktorá vráti vzdialenos medzi dvoma bodmi do
-			// premeny dist
 			double dist = GPS.HaversineInKM(radius, gpsPlane);
 			if (dist <= radiusS) {
 				numOfPlanes += 1;
@@ -143,14 +141,6 @@ public class Utils {
 
 		sql.insert("INSERT INTO 'Planned List' (PlaneID, Leave, Arrival, 'Date/Time') VALUES " + buff.toString() + ";");
 
-		// double speed = models.getDouble("AvgSpeed");
-		// gpsRelative = GPS.calcRelativeGPS(gpsStartPoint, gpsEndPoint, speed,
-		// timeSet);
-
-		// sql.update("UPDATE 'Planes' set 'GpsX' = " + gpsRelative.x + ",
-		// 'GpsY' = " + gpsRelative.y + " WHERE 'ID' = " + planes.getInt("ID") +
-		// ";");
-
 	}
 
 	public static void initPlanList(SqlC sql) throws SQLException, ParseException {
@@ -210,9 +200,6 @@ public class Utils {
 
 	}
 
-	// "DatabaseInitContent.conf"
-	// "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) VALUES (1, 'Paul', 32,
-	// 'California', 20000.00 );"
 	public static void initDatabase(SqlC sql, String fname) throws FileNotFoundException, SQLException, IOException {
 		sql.insert(Utils.readInitInfo(fname).toString());
 	}
